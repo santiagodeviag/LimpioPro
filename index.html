@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LimpioPro | Transformación Real</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'limpio-blue': '#1c69c9',
+                        'limpio-green': '#6ab23a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .comparison-slider-container {
+            position: relative; width: 100%; height: 300px; overflow: hidden; border-radius: 1.5rem; cursor: ew-resize;
+        }
+        @media (min-width: 768px) { .comparison-slider-container { height: 380px; } }
+        .comparison-slider-container img {
+            width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; user-select: none;
+        }
+        .img-after { clip-path: inset(0 0 0 50%); }
+        .slider-handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background: white; transform: translateX(-50%); z-index: 10; }
+        .slider-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 50%; padding: 8px; color: #1c69c9; box-shadow: 0 0 10px rgba(0,0,0,0.3); }
+        .modal { transition: opacity 0.3s ease; position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 100; }
+        .modal-overlay { position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="bg-white/90 backdrop-blur-md shadow-sm p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-limpio-blue rounded-lg flex items-center justify-center text-white font-bold text-xl">L</div>
+                <div>
+                    <h1 class="text-xl font-black text-limpio-blue leading-none">LimpioPro</h1>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Más que limpieza, transformación</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-8 font-bold text-sm uppercase text-gray-600">
+                <a href="#muebles" class="hover:text-limpio-blue transition">Lavado Técnico</a>
+                <a href="#hogar" class="hover:text-limpio-blue transition">Limpieza Hogar</a>
+            </nav>
+            <a href="https://wa.me/573173990929" class="bg-limpio-green text-white px-6 py-2 rounded-full font-bold shadow-lg flex items-center hover:scale-105 transition">
+                <i class="fab fa-whatsapp mr-2"></i> Agendar
+            </a>
+        </div>
+    </header>
+
+    <section class="py-12 px-4 text-center bg-gradient-to-b from-white to-gray-100">
+        <h2 class="text-4xl font-black text-limpio-blue mb-2 uppercase">Resultados Impecables</h2>
+        <p class="text-gray-600 max-w-md mx-auto mb-8">Servicio profesional en Buga. Desliza para ver el cambio.</p>
+        
+        <div class="max-w-3xl mx-auto shadow-2xl comparison-slider-container" id="main-slider">
+            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1200" alt="Antes">
+            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1200" class="img-after" id="after-img-main" style="filter: brightness(1.2) contrast(1.1);">
+            <div class="slider-handle" id="handle-main"><div class="slider-button"><i class="fas fa-arrows-left-right"></i></div></div>
+        </div>
+    </section>
+
+    <section id="muebles" class="py-16 container mx-auto px-4">
+        <h3 class="text-2xl font-black text-limpio-blue mb-10 border-l-8 border-limpio-green pl-4 uppercase">Lavado Especializado</h3>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div onclick="openModal('modal-colchones')" class="bg-white p-6 rounded-[2rem] shadow-xl hover:scale-105 transition cursor-pointer text-center border border-gray-100">
+                <i class="fas fa-bed text-4xl text-limpio-green mb-4"></i>
+                <h4 class="font-bold text-limpio-blue uppercase text-xs">Colchones</h4>
+            </div>
+            <div onclick="openModal('modal-salas')" class="bg-white p-6 rounded-[2rem] shadow-xl hover:scale-105 transition cursor-pointer text-center border border-gray-100">
+                <i class="fas fa-couch text-4xl text-limpio-green mb-4"></i>
+                <h4 class="font-bold text-limpio-blue uppercase text-xs">Salas</h4>
+            </div>
+            <div onclick="openModal('modal-comedores')" class="bg-white p-6 rounded-[2rem] shadow-xl hover:scale-105 transition cursor-pointer text-center border border-gray-100">
+                <i class="fas fa-chair text-4xl text-limpio-green mb-4"></i>
+                <h4 class="font-bold text-limpio-blue uppercase text-xs">Comedores</h4>
+            </div>
+            <div onclick="openModal('modal-peluches')" class="bg-white p-6 rounded-[2rem] shadow-xl hover:scale-105 transition cursor-pointer text-center border border-gray-100">
+                <i class="fas fa-paw text-4xl text-limpio-green mb-4"></i>
+                <h4 class="font-bold text-limpio-blue uppercase text-xs">Peluches</h4>
+            </div>
+            <div onclick="openModal('modal-alfombras')" class="bg-white p-6 rounded-[2rem] shadow-xl hover:scale-105 transition cursor-pointer text-center border border-gray-100">
+                <i class="fas fa-scroll text-4xl text-limpio-green mb-4 rotate-90"></i>
+                <h4 class="font-bold text-limpio-blue uppercase text-xs">Alfombras</h4>
+            </div>
+        </div>
+    </section>
+
+    <section id="hogar" class="py-20 bg-limpio-blue text-white px-4">
+        <div class="container mx-auto">
+            <h3 class="text-3xl font-black mb-12 text-center uppercase tracking-widest">Limpieza de Hogar</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20 text-center">
+                    <h4 class="text-xl font-bold mb-4">Plan 3 Horas</h4>
+                    <p class="text-4xl font-black text-limpio-green mb-6">$66.000</p>
+                    <a href="https://wa.me/573173990929?text=Info%20plan%203H" class="block bg-white text-limpio-blue font-black py-3 rounded-xl uppercase">Reservar</a>
+                </div>
+                <div class="bg-white p-8 rounded-3xl text-center transform scale-110 shadow-2xl">
+                    <h4 class="text-xl font-bold mb-4 text-limpio-blue">Plan 5 Horas</h4>
+                    <p class="text-5xl font-black text-limpio-green mb-6">$110.000</p>
+                    <a href="https://wa.me/573173990929?text=Info%20plan%205H" class="block bg-limpio-green text-white font-black py-4 rounded-xl uppercase shadow-lg text-sm">El más popular</a>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20 text-center">
+                    <h4 class="text-xl font-bold mb-4">Plan 8 Horas</h4>
+                    <p class="text-4xl font-black text-limpio-green mb-6">$176.000</p>
+                    <a href="https://wa.me/573173990929?text=Info%20plan%208H" class="block bg-white text-limpio-blue font-black py-3 rounded-xl uppercase">Día Completo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="modal-base" class="modal hidden">
+        <div class="modal-overlay" onclick="closeAllModals()"></div>
+        <div class="bg-white w-11/12 max-w-lg rounded-[2.5rem] overflow-hidden z-10 relative shadow-2xl">
+            <button onclick="closeAllModals()" class="absolute top-4 right-4 z-50 bg-white shadow-lg rounded-full w-10 h-10 text-limpio-blue font-bold">X</button>
+            <div class="comparison-slider-container" id="modal-slider-box">
+                <img id="img-before-modal" src="" alt="Antes">
+                <img id="img-after-modal" src="" class="img-after" style="filter: brightness(1.15);">
+                <div class="slider-handle" id="modal-handle"><div class="slider-button"><i class="fas fa-arrows-left-right"></i></div></div>
+            </div>
+            <div class="p-8">
+                <h3 id="modal-title" class="text-2xl font-black text-limpio-blue uppercase"></h3>
+                <p id="modal-desc" class="text-gray-500 my-4 text-sm"></p>
+                <div id="modal-prices" class="space-y-2 font-bold text-gray-700"></div>
+                <a id="modal-wa" href="" class="mt-8 block text-center bg-limpio-green text-white font-black py-4 rounded-2xl shadow-xl hover:bg-green-600 transition uppercase tracking-tighter">Agendar Servicio</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const servicios = {
+            'modal-colchones': {
+                title: 'Colchones',
+                desc: 'Eliminación de manchas, ácaros y malos olores.',
+                prices: ['Sencillo: $45.000', 'Doble: $65.000', 'King: $90.000'],
+                imgAntes: 'https://images.unsplash.com/photo-1632102985348-93666b6b7a5a?w=800',
+                imgDespues: 'https://images.unsplash.com/photo-1632102985348-93666b6b7a5a?w=800'
+            },
+            'modal-salas': {
+                title: 'Salas',
+                desc: 'Lavado profundo con succión para un secado acelerado.',
+                prices: ['Sofá 2 puestos: $60.000', 'Sofá 3 puestos: $85.000', 'Sala en L: Desde $130.000'],
+                imgAntes: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800',
+                imgDespues: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800'
+            },
+            'modal-comedores': {
+                title: 'Comedores',
+                desc: 'Desmanchado técnico de sillas y espaldares.',
+                prices: ['4 Sillas: $40.000', '6 Sillas: $60.000'],
+                imgAntes: 'https://images.unsplash.com/photo-1577156339360-6e9a905ad2ee?w=800',
+                imgDespues: 'https://images.unsplash.com/photo-1577156339360-6e9a905ad2ee?w=800'
+            },
+            'modal-peluches': {
+                title: 'Peluches',
+                desc: 'Desinfección profunda para proteger a los más pequeños.',
+                prices: ['Pequeños: $8.000', 'Gigantes: Desde $30.000'],
+                imgAntes: 'https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800',
+                imgDespues: 'https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800'
+            },
+            'modal-alfombras': {
+                title: 'Alfombras',
+                desc: 'Tratamiento especial para todo tipo de fibras.',
+                prices: ['Pequeña: $30.000', 'Por M2: $15.000'],
+                imgAntes: 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=800',
+                imgDespues: 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=800'
+            }
+        };
+
+        function openModal(key) {
+            const data = servicios[key];
+            const modal = document.getElementById('modal-base');
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-desc').innerText = data.desc;
+            document.getElementById('img-before-modal').src = data.imgAntes;
+            const afterImg = document.getElementById('img-after-modal');
+            afterImg.src = data.imgDespues;
+            afterImg.style.clipPath = `inset(0 0 0 50%)`;
+            document.getElementById('modal-handle').style.left = `50%`;
+            document.getElementById('modal-prices').innerHTML = data.prices.map(p => `<div class="border-b pb-1">✅ ${p}</div>`).join('');
+            document.getElementById('modal-wa').href = `https://wa.me/573173990929?text=Hola!%20Info%20servicio%20de%20${data.title}`;
+            modal.classList.remove('hidden');
+            initSlider('modal-slider-box', 'img-after-modal', 'modal-handle');
+        }
+
+        function closeAllModals() { document.getElementById('modal-base').classList.add('hidden'); }
+
+        function initSlider(containerId, afterImgId, handleId) {
+            const container = document.getElementById(containerId);
+            const afterImg = document.getElementById(afterImgId);
+            const handle = document.getElementById(handleId);
+            const move = (e) => {
+                let x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                let rect = container.getBoundingClientRect();
+                let pos = ((x - rect.left) / rect.width) * 100;
+                if (pos >= 0 && pos <= 100) {
+                    handle.style.left = `${pos}%`;
+                    afterImg.style.clipPath = `inset(0 0 0 ${pos}%)`;
+                }
+            };
+            container.addEventListener('mousemove', move);
+            container.addEventListener('touchmove', move);
+        }
+        initSlider('main-slider', 'after-img-main', 'handle-main');
+    </script>
+</body>
+</html>
